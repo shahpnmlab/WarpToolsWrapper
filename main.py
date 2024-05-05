@@ -4,8 +4,8 @@ from pathlib import Path
 from funcs import make_com_script, parser, is_program_in_path
 import typer
 
-warpIT = typer.Typer()
-@warpIT.command(no_args_is_help=True)
+warper = typer.Typer()
+@warper.command(no_args_is_help=True)
 def run(config_file: Path = typer.Option(..., help="Path to config.ini file"),
         out_path: Path = typer.Option(..., help="Path to where the script file should go")):
     isIMOD = is_program_in_path("3dmod")
@@ -31,4 +31,4 @@ def run(config_file: Path = typer.Option(..., help="Path to config.ini file"),
 
 
 if __name__ == "__main__":
-    warpIT()
+    warper()
