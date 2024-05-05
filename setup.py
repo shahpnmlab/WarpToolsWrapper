@@ -17,7 +17,7 @@ with open(os.path.abspath(os.path.join(os.path.dirname(__file__), "requirements.
             install_requires.append(f'{package_name} @ {line}')
         else:
             install_requires.append(line.strip())
-setup(name='warper',
+setup(name='WarpToolsWrapper',
       version='0.1',
       url='',
       license='',
@@ -27,7 +27,7 @@ setup(name='warper',
       dependency_links=dependency_links,
       include_package_data=True,
       entry_points={
-          'console_scripts': ['warper=warper.run:warper'],
+          'console_scripts': ['warper=warper.main:warper'],
       },
       zip_safe=False
       )

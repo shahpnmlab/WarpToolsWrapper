@@ -1,7 +1,7 @@
 import os
 import datetime
 from pathlib import Path
-from funcs import make_com_script, parser, is_program_in_path
+from warper.funcs import make_com_script, parser, is_program_in_path
 import typer
 
 warper = typer.Typer()
@@ -31,4 +31,4 @@ def run(config_file: Path = typer.Option(..., help="Path to config.ini file"),
 
 
 if __name__ == "__main__":
-    warper()
+    warper()(run)
