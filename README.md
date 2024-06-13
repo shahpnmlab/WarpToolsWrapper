@@ -15,7 +15,11 @@ To install -
 ```commandline
 git clone git@github.com:shahpnmlab/WarpToolsWrapper.git
 cd WarpToolsWrapper
-pip install .
+pip install -e .
+```
+If you want to update the program, simple navigate to the WarpToolsWrapper directory on your computer and simply run
+```commandline
+git pull
 ```
 # Running
 Once installed you can call the program with
