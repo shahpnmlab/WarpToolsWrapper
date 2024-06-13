@@ -27,12 +27,6 @@ def is_program_in_path(program):
     # Return False if the program is not found in any directories in the PATH
     return False
 
-# def parser(section, in_config_file):
-#     config = configparser.ConfigParser()
-#     config.read(in_config_file)
-#     out = {option: config.get(section, option) for option in config.options(section)}
-#     return out
-
 def parser(in_config_file, section=None):
     config = configparser.ConfigParser()
     config.read(in_config_file)
@@ -44,7 +38,10 @@ def parser(in_config_file, section=None):
         return {sec: {option: config.get(sec, option) for option in config.options(sec)} for sec in config.sections()}
 
 def make_com_script(settings, routine):
-    command_parts = [f"WarpTools {routine}"]
+    if routine == "Noise2Map":
+        command_parts = [f"{routine}"]
+    else:
+        command_parts = [f"WarpTools {routine}"]
 
     # Iterate over all settings
     for key, value in settings.items():
@@ -56,9 +53,3 @@ def make_com_script(settings, routine):
 
     command = " ".join(command_parts)
     return command
-
-    # with open(filename, 'w') as file:
-    #     file.write("#!/bin/bash\n")
-    #     file.write(command + "\n")
-    #
-    # return filename
