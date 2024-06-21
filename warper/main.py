@@ -1,7 +1,7 @@
 import os
 import datetime
 from pathlib import Path
-from funcs import make_com_script, parser
+from warper.funcs import make_com_script, parser
 import typer
 import logging
 
