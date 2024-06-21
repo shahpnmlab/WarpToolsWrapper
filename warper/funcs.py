@@ -2,46 +2,26 @@ import os
 import datetime
 import configparser
 
-def is_program_in_path(program):
-    # Get the system's PATH variable
-    path = os.environ.get("PATH", "")
-
-    # Determine the right separator based on the operating system
-    if os.name == 'nt':  # Windows
-        separator = ';'
-    else:  # POSIX (Linux, Unix, MacOS)
-        separator = ':'
-
-    # Split the PATH into directories
-    directories = path.split(separator)
-
-    # Check each directory in the PATH
-    for directory in directories:
-        # Build the full path to where the program would be if it's in this directory
-        executable_path = os.path.join(directory, program)
-
-        # Check if the executable exists in this path and is executable
-        if os.path.exists(executable_path) and os.access(executable_path, os.X_OK):
-            return True
-
-    # Return False if the program is not found in any directories in the PATH
-    return False
-
 def parser(in_config_file, section=None):
     config = configparser.ConfigParser()
     config.read(in_config_file)
+
+    def parse_section(section):
+        return tuple(section.split(":"))
+
     if section:
-        # Return a dictionary of options for a specific section
+        section_tuple = parse_section(section)
         return {option: config.get(section, option) for option in config.options(section)}
     else:
-        # Return a dictionary of all sections with their corresponding options if no specific section is provided
-        return {sec: {option: config.get(sec, option) for option in config.options(sec)} for sec in config.sections()}
+        return {parse_section(sec): {option: config.get(sec, option) for option in config.options(sec)} for sec in
+                config.sections()}
 
-def make_com_script(settings, routine):
-    if routine == "Noise2Map":
-        command_parts = [f"{routine}"]
+
+def make_com_script(section_tuple, settings):
+    if section_tuple[0] == "Noise2Map":
+        command_parts = [f"{section_tuple[0]}"]
     else:
-        command_parts = [f"WarpTools {routine}"]
+        command_parts = [f"{section_tuple[0]} {section_tuple[1]}"]
 
     # Iterate over all settings
     for key, value in settings.items():

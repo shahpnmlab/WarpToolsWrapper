@@ -29,4 +29,14 @@ One can call the program in several ways -
 1. `warper -c <recipe>.ini` -> This will generate a script file with the following name `warpTools_<HHMMSS>_<YYMMDD>.sh`
 2. `warper -c <recipe>.ini -o <a_unique_name>.sh` -> This will generate a script file a user provided file name.
 3. `warper -c <recipe>.ini -s <a_submission_script>.sh` -> This will generate a submission script based on the user provided template.
-    #### Note: Sucesssive calls `-s` will result in a submission script with accumulated bash commands. It is up to the user to review the submission script before submitting it.  
+    #### Note: Sucesssive calls `-s` will result in a submission script with accumulated bash commands. It is up to the user to review the submission script before submitting it.
+
+## Recipe file construction
+The construction of the recipes has the following format
+```
+[<warp_main_cmd>:<sub_routine_within_cmd>]
+option1 = <value1>
+option2 = <value2>
+option3 = <value3>
+```
+You can see example config files in the ```examples``` directory of the repo.
