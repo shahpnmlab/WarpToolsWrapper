@@ -17,7 +17,7 @@ git clone git@github.com:shahpnmlab/WarpToolsWrapper.git
 cd WarpToolsWrapper
 pip install -e .
 ```
-If you want to update the program, simple navigate to the WarpToolsWrapper directory on your computer and simply run
+If you want to update the program, navigate to the WarpToolsWrapper directory on your computer and run
 ```commandline
 git pull
 ```
@@ -31,7 +31,7 @@ One can call the program in several ways -
 3. `warper -c <recipe>.ini -s <a_submission_script>.sh` -> This will generate a submission script based on the user provided template.
     #### Note: Sucesssive calls `-s` will result in a submission script with accumulated bash commands. It is up to the user to review the submission script before submitting it.
 
-## Recipe file construction
+# Recipe file construction
 The construction of the recipes has the following format
 ```
 [<warp_main_cmd>:<sub_routine_within_cmd>]
