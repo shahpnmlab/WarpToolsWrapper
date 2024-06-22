@@ -10,18 +10,29 @@ logger = logging.getLogger()
 
 warper = typer.Typer(add_completion=False)
 
-app_version = "0.4"
+app_version = "0.4.1"
 def version_callback(value: bool):
     if value:
         typer.echo(f"Version: {app_version}")
         raise typer.Exit()
+
+def parse_steps(steps_str):
+    steps = []
+    parts = steps_str.split(',')
+    for part in parts:
+        if '-' in part:
+            start, end = map(int, part.split('-'))
+            steps.extend(range(start, end + 1))
+        else:
+            steps.append(int(part))
+    return steps
 
 @warper.command(no_args_is_help=True)
 def main(config_file: Path = typer.Option(None, "--config", "-c", help="input configuration file (eg. config.ini)"),
          out_path: Path = typer.Option(None, "--output", "-o", help="Output name for bash script"),
          submission_script_template: Path = typer.Option(None, "--submission_script", "-s",
                                                          help="Path to a submission script template"),
-         steps: str = typer.Option(None, "--steps", "-t", help="Comma-separated list of steps to include in the script"),
+         steps: str = typer.Option(None, "--steps", "-t", help="Comma-separated list of steps or ranges to include in the script (e.g., 1,2-4,5)"),
          version: bool = typer.Option(None, "--version", callback=version_callback, is_eager=True, help="Show the version and exit")):
     if not config_file:
         typer.echo("Error: Missing option '--config' / '-c'.")
@@ -35,7 +46,7 @@ def main(config_file: Path = typer.Option(None, "--config", "-c", help="input co
             typer.echo(f"{task} [{index}]")
         steps = typer.prompt("Please enter the indices of the steps you want to include (comma-separated)")
 
-    selected_indices = [int(i) for i in steps.split(",")]
+    selected_indices = parse_steps(steps)
     selected_tasks = [indexed_sections[i] for i in selected_indices]
 
     if out_path is None:

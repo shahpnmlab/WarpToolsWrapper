@@ -17,9 +17,8 @@ def parser(in_config_file, section=None):
         indexed_sections = {index + 1: task for index, task in enumerate(sections)}
         return indexed_sections, sections
 
-
 def make_com_script(section_tuple, settings):
-    if section_tuple[0] == "Noise2Map":
+    if len(section_tuple) == 1:
         command_parts = [f"{section_tuple[0]}"]
     else:
         command_parts = [f"{section_tuple[0]} {section_tuple[1]}"]
@@ -34,3 +33,4 @@ def make_com_script(section_tuple, settings):
 
     command = " ".join(command_parts)
     return command
+
