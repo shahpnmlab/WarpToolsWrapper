@@ -13,8 +13,9 @@ def parser(in_config_file, section=None):
         section_tuple = parse_section(section)
         return {option: config.get(section, option) for option in config.options(section)}
     else:
-        return {parse_section(sec): {option: config.get(sec, option) for option in config.options(sec)} for sec in
-                config.sections()}
+        sections = {parse_section(sec): {option: config.get(sec, option) for option in config.options(sec)} for sec in config.sections()}
+        indexed_sections = {index + 1: task for index, task in enumerate(sections)}
+        return indexed_sections, sections
 
 
 def make_com_script(section_tuple, settings):

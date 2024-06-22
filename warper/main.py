@@ -10,7 +10,7 @@ logger = logging.getLogger()
 
 warper = typer.Typer(add_completion=False)
 
-app_version = 0.3
+app_version = "0.4"
 def version_callback(value: bool):
     if value:
         typer.echo(f"Version: {app_version}")
@@ -21,13 +21,22 @@ def main(config_file: Path = typer.Option(None, "--config", "-c", help="input co
          out_path: Path = typer.Option(None, "--output", "-o", help="Output name for bash script"),
          submission_script_template: Path = typer.Option(None, "--submission_script", "-s",
                                                          help="Path to a submission script template"),
+         steps: str = typer.Option(None, "--steps", "-t", help="Comma-separated list of steps to include in the script"),
          version: bool = typer.Option(None, "--version", callback=version_callback, is_eager=True, help="Show the version and exit")):
-
     if not config_file:
         typer.echo("Error: Missing option '--config' / '-c'.")
         raise typer.Exit(code=1)
 
-    settings = parser(config_file)
+    indexed_sections, settings = parser(config_file)
+
+    if steps is None:
+        typer.echo("Available tasks:")
+        for index, task in indexed_sections.items():
+            typer.echo(f"{task} [{index}]")
+        steps = typer.prompt("Please enter the indices of the steps you want to include (comma-separated)")
+
+    selected_indices = [int(i) for i in steps.split(",")]
+    selected_tasks = [indexed_sections[i] for i in selected_indices]
 
     if out_path is None:
         filename = os.path.join(os.getcwd(), f"warpTools_{datetime.datetime.now():%Y%m%d_%H%M%S}.sh")
@@ -40,8 +49,9 @@ def main(config_file: Path = typer.Option(None, "--config", "-c", help="input co
         file.write("#!/bin/bash\n")
         file.write("\n")
 
-        # Assuming tasks are the sections in the config file
-        for task, options in settings.items():
+        # Generate commands for selected tasks
+        for task in selected_tasks:
+            options = settings[task]
             com = make_com_script(task, options)
             commands.append(com)  # Append each command to the list
             file.write(f'{com}\n')
@@ -57,4 +67,3 @@ def main(config_file: Path = typer.Option(None, "--config", "-c", help="input co
 
 if __name__ == "__main__":
     warper()(main)
-
