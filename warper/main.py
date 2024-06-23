@@ -10,11 +10,13 @@ logger = logging.getLogger()
 
 warper = typer.Typer(add_completion=False)
 
-app_version = "0.4.1"
+app_version = "0.4.2"
 def version_callback(value: bool):
     if value:
         typer.echo(f"Version: {app_version}")
         raise typer.Exit()
+
+warper = typer.Typer(add_completion=False)
 
 def parse_steps(steps_str):
     steps = []

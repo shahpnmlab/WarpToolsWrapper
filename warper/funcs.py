@@ -21,7 +21,7 @@ def make_com_script(section_tuple, settings):
     if len(section_tuple) == 1:
         command_parts = [f"{section_tuple[0]}"]
     else:
-        command_parts = [f"{section_tuple[0]} {section_tuple[1]}"]
+        command_parts = [f"{section_tuple[0]}"]
 
     # Iterate over all settings
     for key, value in settings.items():
