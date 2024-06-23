@@ -1,5 +1,3 @@
-import os
-import datetime
 import configparser
 
 def parser(in_config_file, section=None):
@@ -18,10 +16,10 @@ def parser(in_config_file, section=None):
         return indexed_sections, sections
 
 def make_com_script(section_tuple, settings):
-    if len(section_tuple) == 1:
-        command_parts = [f"{section_tuple[0]}"]
-    else:
-        command_parts = [f"{section_tuple[0]}"]
+    # Only take the first part of the section tuple as the command
+    command_parts = [section_tuple[0]]
+    if len(section_tuple) > 1 and not section_tuple[1].isdigit():
+        command_parts.append(section_tuple[1])
 
     # Iterate over all settings
     for key, value in settings.items():
@@ -33,4 +31,3 @@ def make_com_script(section_tuple, settings):
 
     command = " ".join(command_parts)
     return command
-
